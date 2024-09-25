@@ -1,0 +1,23 @@
+version: "1"
+services:
+  discovery:
+    environment:
+      TAG: DISCOVERY
+    build: ./discovery
+    container_name: discovery
+    restart: on-failure
+    ports:
+      - "8761:8761"
+    env_file:
+      - .env
+
+  gateway:
+    environment:
+      TAG: gateway
+    build: ./gateway
+    container_name: gateway
+    restart: on-failure
+    ports:
+      - "8079:8079"
+    env_file:
+      - .env
