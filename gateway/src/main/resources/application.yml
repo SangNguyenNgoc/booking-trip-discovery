@@ -8,8 +8,10 @@ spring:
           enabled: true
 
 server:
-  port: 8080
+  port: 8079
 
 eureka:
   client:
     register-with-eureka: false
+    service-url:
+      defaultZone: http://${EUREKA_HOST}:8761/eureka/
