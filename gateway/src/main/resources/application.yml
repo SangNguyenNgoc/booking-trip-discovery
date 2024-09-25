@@ -6,6 +6,26 @@ spring:
       discovery:
         locator:
           enabled: true
+      routes:
+        - id: locations_route
+          uri: lb://location
+          predicates:
+            - Path=/api/v1/locations/**
+          filters:
+            - RewritePath=/api/v1/(?<segment>.*), /${segment}
+
+        - id: profiles_route
+          uri: lb://profile
+          predicates:
+            - Path=/api/v1/profiles/**
+          filters:
+            - RewritePath=/api/v1/(?<segment>.*), /${segment}
+
+        - id: auth
+          uri: lb://auth-server
+          predicates:
+            - Path=/oauth2/**
+
 
 server:
   port: 8079
