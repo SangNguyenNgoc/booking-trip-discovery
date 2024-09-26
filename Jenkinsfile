@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_COMPOSE_FILE = 'discovery.yml'
-        WORKING_DIRECTORY = '/mywork/discovery/booking-trip-discovery/'
+        WORKING_DIRECTORY = '/mywork/discovery/booking-trip-discovery'
     }
 
     stages {
