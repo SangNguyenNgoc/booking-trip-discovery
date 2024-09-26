@@ -26,7 +26,7 @@ pipeline {
             steps {
                 dir("${WORKING_DIRECTORY}") {
                     echo "Pulling latest code from branch master"
-                    sh 'sudo git pull origin master'
+                    sh 'git pull origin master'
                 }
             }
         }
