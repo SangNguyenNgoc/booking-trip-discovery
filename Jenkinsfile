@@ -18,8 +18,8 @@ pipeline {
         stage('Pull from Git') {
             steps {
                 dir("${WORKING_DIRECTORY}") {
-                    // Pull code từ nhánh master
-                    git branch: 'master', url: 'https://github.com/SangNguyenNgoc/booking-trip-discovery.git'
+                    echo "Pulling latest code from branch master"
+                    sh 'git pull origin master'
                 }
             }
         }
