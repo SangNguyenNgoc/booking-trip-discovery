@@ -15,6 +15,13 @@ pipeline {
             }
         }
 
+        stage('Configure Safe Directory') {
+            steps {
+                // Thêm thư mục vào danh sách safe directory của Git
+                sh "git config --global --add safe.directory ${WORKING_DIRECTORY}"
+            }
+        }
+
         stage('Pull from Git') {
             steps {
                 dir("${WORKING_DIRECTORY}") {
