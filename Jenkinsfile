@@ -31,7 +31,7 @@ pipeline {
                     sh """
                         ssh -o StrictHostKeyChecking=no root@${DEPLOY_SERVER} '
                             # 2: Clone mã nguồn từ GitHub
-                            git clone ${GITHUB_REPO} cloned_repo
+                            git clone ${GITHUB_REPO} ${DEPLOY_PATH}/cloned_repo
                         '
                     """
                 }
