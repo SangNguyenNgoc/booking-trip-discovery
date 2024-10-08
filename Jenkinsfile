@@ -59,7 +59,7 @@ pipeline {
                         ssh -o StrictHostKeyChecking=no root@${DEPLOY_SERVER} '
                             # 4: Chạy docker-compose để build và deploy
                             cd ${DEPLOY_PATH}/cloned_repo &&
-                            docker-compose -f discovery.yml up -d --build
+                            docker compose -f discovery.yml up -d --build
                         '
                     """
                 }
