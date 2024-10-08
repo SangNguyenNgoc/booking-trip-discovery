@@ -10,8 +10,7 @@ spring:
         - id: locations_route
           uri: lb://location
           predicates:
-            - Path=/api/v1/locations/**
-            - Path=/api/v1/regions/**
+            - Path=/api/v1/locations/**, /api/v1/regions/**
           filters:
             - RewritePath=/api/v1/(?<segment>.*), /${segment}
 
@@ -25,7 +24,7 @@ spring:
         - id: vehicle_route
           uri: lb://vehicle
           predicates:
-            - Path=/api/v1/vehicles/**
+            - Path=/api/v1/vehicles/**, /api/v1/vtypes/**
           filters:
             - RewritePath=/api/v1/(?<segment>.*), /${segment}
 
