@@ -1,11 +1,15 @@
-#base image: linux alpine os with open jdk 8
-FROM maven:3.8.4-openjdk-17 AS build
-
-# Đặt thư mục làm việc trong container
+FROM maven:3.8.4-openjdk-17 AS builder
 WORKDIR /app
 
-# Copy toàn bộ mã nguồn vào container
-COPY . .
+COPY pom.xml .
+COPY src ./src
 
-# Cài đặt các dependencies của Maven và chạy ứng dụng bằng lệnh spring-boot:run
-CMD ["mvn", "spring-boot:run"]
+RUN mvn clean package -DskipTests
+
+FROM openjdk:17-jdk-slim
+
+WORKDIR /app
+
+COPY --from=builder /app/target/*.jar app.jar
+
+ENTRYPOINT ["java", "-jar", "app.jar"]

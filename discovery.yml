@@ -7,7 +7,7 @@ services:
     container_name: discovery
     restart: on-failure
     ports:
-      - 8761:8761
+      - "8761:8761"
     env_file:
       - .env
 
@@ -18,7 +18,7 @@ services:
     container_name: gateway
     restart: on-failure
     ports:
-      - 8079:8079
+      - "8079:8079"
     env_file:
       - .env
     depends_on:

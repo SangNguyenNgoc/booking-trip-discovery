@@ -2,51 +2,88 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_COMPOSE_FILE = 'discovery.yml'
-        WORKING_DIRECTORY = '/mywork/discovery/booking-trip-discovery'
+        DEPLOY_SERVER = '178.128.214.157'
+        DEPLOY_PATH = '/mywork/discovery'
+        SSH_CREDENTIALS_ID = 'discovery-server-key' // Sử dụng ID từ Jenkins Credentials
+        GITHUB_REPO = 'https://github.com/SangNguyenNgoc/booking-trip-discovery.git'
     }
 
     stages {
-        stage('Change Directory') {
+        stage('SSH to Deploy Server and Setup') {
             steps {
-                dir("${WORKING_DIRECTORY}") {
-                    echo 'Changed to working directory'
+                sshagent([SSH_CREDENTIALS_ID]) {
+                    sh """
+                        ssh -o StrictHostKeyChecking=no root@${DEPLOY_SERVER} '
+                            # 1: Truy cập vào thư mục làm việc
+                            cd ${DEPLOY_PATH} &&
+                            
+                            # Xóa thư mục clone cũ nếu tồn tại để đảm bảo clean build
+                            rm -rf cloned_repo
+                        '
+                    """
                 }
             }
         }
 
-        stage('Configure Safe Directory') {
+        stage('Clone Source Code') {
             steps {
-                // Thêm thư mục vào danh sách safe directory của Git
-                sh "git config --global --add safe.directory '*'"
-            }
-        }
-
-        stage('Pull from Git') {
-            steps {
-                dir("${WORKING_DIRECTORY}") {
-                    echo "Pulling latest code from branch master"
-                    sh 'git pull origin master'
+                sshagent([SSH_CREDENTIALS_ID]) {
+                    sh """
+                        ssh -o StrictHostKeyChecking=no root@${DEPLOY_SERVER} '
+                            # 2: Clone mã nguồn từ GitHub
+                            git clone ${GITHUB_REPO} cloned_repo
+                        '
+                    """
                 }
             }
         }
 
-        stage('Docker Compose') {
+        stage('Copy .env File') {
             steps {
-                dir("${WORKING_DIRECTORY}") {
-                    // Chạy Docker Compose với cờ -f
-                    sh "docker compose -f ${DOCKER_COMPOSE_FILE} up -d --build"
+                sshagent([SSH_CREDENTIALS_ID]) {
+                    sh """
+                        ssh -o StrictHostKeyChecking=no root@${DEPLOY_SERVER} '
+                            # 3: Copy file .env vào thư mục vừa clone
+                            cd ${DEPLOY_PATH}/cloned_repo &&
+                            cp ../.env .
+                        '
+                    """
+                }
+            }
+        }
+
+        stage('Build and Deploy with Docker Compose') {
+            steps {
+                sshagent([SSH_CREDENTIALS_ID]) {
+                    sh """
+                        ssh -o StrictHostKeyChecking=no root@${DEPLOY_SERVER} '
+                            # 4: Chạy docker-compose để build và deploy
+                            cd ${DEPLOY_PATH}/cloned_repo &&
+                            docker-compose -f discovery.yml up -d --build
+                        '
+                    """
+                }
+            }
+        }
+
+        stage('Clean Up') {
+            steps {
+                sshagent([SSH_CREDENTIALS_ID]) {
+                    sh """
+                        ssh -o StrictHostKeyChecking=no root@${DEPLOY_SERVER} '
+                            # 5: Xóa thư mục clone sau khi deploy xong
+                            cd ${DEPLOY_PATH} &&
+                            rm -rf cloned_repo
+                        '
+                    """
                 }
             }
         }
     }
 
     post {
-        success {
-            echo 'Pipeline succeeded!'
-        }
-        failure {
-            echo 'Pipeline failed!'
+        always {
+            cleanWs()
         }
     }
 }
