@@ -8,7 +8,7 @@ spring:
           enabled: true
       routes:
         - id: locations_route
-          uri: http://location:8082
+          uri: lb://location
           predicates:
             - Path=/api/v1/locations/**
             - Path=/api/v1/regions/**
@@ -16,21 +16,21 @@ spring:
             - RewritePath=/api/v1/(?<segment>.*), /${segment}
 
         - id: profiles_route
-          uri: http://profile:8083
+          uri: lb://profile
           predicates:
             - Path=/api/v1/profiles/**
           filters:
             - RewritePath=/api/v1/(?<segment>.*), /${segment}
 
         - id: vehicle_route
-          uri: http://vehicle:8084
+          uri: lb://vehicle
           predicates:
             - Path=/api/v1/vehicles/**
           filters:
             - RewritePath=/api/v1/(?<segment>.*), /${segment}
 
         - id: auth
-          uri: http://auth-server:9000
+          uri: lb://auth-server
           predicates:
             - Path=/oauth2/**
 
