@@ -5,6 +5,9 @@ spring:
 server:
   port: 8080
 
+client:
+  client-id: web-client
+
 springdoc:
   swagger-ui:
     urls:
@@ -16,3 +19,7 @@ springdoc:
         url: http://167.71.192.132:8084/v3/api-docs
     url: /v3/api-docs
     path: /
+    oauth:
+      client-id: ${client.client-id}
+      use-pkce-with-authorization-code-grant: true
+    oauth2-redirect-url: ${SWAGGER_DOMAIN}/swagger-ui/oauth2-redirect.html
