@@ -7,19 +7,26 @@ spring:
         locator:
           enabled: true
       routes:
-        - id: locations_route
+
+        #Location Service
+
+        - id: location_route
           uri: lb://location
           predicates:
             - Path=/api/v1/locations/**, /api/v1/regions/**
           filters:
             - RewritePath=/api/v1/(?<segment>.*), /${segment}
 
-        - id: profiles_route
+        #Profile Service
+
+        - id: profile_route
           uri: lb://profile
           predicates:
             - Path=/api/v1/profiles/**
           filters:
             - RewritePath=/api/v1/(?<segment>.*), /${segment}
+
+        #Vehicle Service
 
         - id: vehicle_route
           uri: lb://vehicle
@@ -28,8 +35,10 @@ spring:
           filters:
             - RewritePath=/api/v1/(?<segment>.*), /${segment}
 
-        - id: auth
-          uri: lb://auth-server
+        #Auth Service
+
+        - id: auth_route
+          uri: ${AUTH_DOMAIN}
           predicates:
             - Path=/oauth2/**
 
@@ -42,3 +51,4 @@ eureka:
     register-with-eureka: false
     service-url:
       defaultZone: http://${EUREKA_HOST}:8761/eureka/
+

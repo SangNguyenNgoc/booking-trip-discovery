@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: swagger
+
+server:
+  port: 8080
+
+springdoc:
+  swagger-ui:
+    urls:
+      - name: Location
+        url: http://167.71.192.132:8082/v3/api-docs
+      - name: Profile
+        url: http://167.71.192.132:8083/v3/api-docs
+      - name: Vehicle
+        url: http://167.71.192.132:8084/v3/api-docs
+    url: /v3/api-docs
+    path: /swagger-ui.html
