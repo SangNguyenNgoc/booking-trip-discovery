@@ -10,38 +10,51 @@ spring:
 
         #Location Service
 
-        - id: location_route
+        - id: location_api_route
           uri: lb://location
           predicates:
             - Path=/api/v1/locations/**, /api/v1/regions/**
           filters:
             - RewritePath=/api/v1/(?<segment>.*), /${segment}
 
+        - id: location_docs_route
+          uri: lb://location
+          predicates:
+            - Path=/location/v3/api-docs
+          filters:
+            - RewritePath=/location/v3/api-docs, /v3/api-docs
+
         #Profile Service
 
-        - id: profile_route
+        - id: profile_api_route
           uri: lb://profile
           predicates:
             - Path=/api/v1/profiles/**
           filters:
             - RewritePath=/api/v1/(?<segment>.*), /${segment}
 
+        - id: profile_docs_route
+          uri: lb://profile
+          predicates:
+            - Path=/profile/v3/api-docs
+          filters:
+            - RewritePath=/profile/v3/api-docs, /v3/api-docs
+
         #Vehicle Service
 
-        - id: vehicle_route
+        - id: vehicle_api_route
           uri: lb://vehicle
           predicates:
             - Path=/api/v1/vehicles/**, /api/v1/vtypes/**
           filters:
             - RewritePath=/api/v1/(?<segment>.*), /${segment}
 
-        #Auth Service
-
-        - id: auth_route
-          uri: ${AUTH_DOMAIN}
+        - id: vehicle_docs_route
+          uri: lb://vehicle
           predicates:
-            - Path=/oauth2/**
-
+            - Path=/vehicle/v3/api-docs
+          filters:
+            - RewritePath=/vehicle/v3/api-docs, /v3/api-docs
 
 server:
   port: 8079

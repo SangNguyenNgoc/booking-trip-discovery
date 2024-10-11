@@ -12,11 +12,11 @@ springdoc:
   swagger-ui:
     urls:
       - name: Location
-        url: http://167.71.192.132:8082/v3/api-docs
+        url: https://api.devsphere.id.vn/location/v3/api-docs
       - name: Profile
-        url: http://167.71.192.132:8083/v3/api-docs
+        url: https://api.devsphere.id.vn/profile/v3/api-docs
       - name: Vehicle
-        url: http://167.71.192.132:8084/v3/api-docs
+        url: https://api.devsphere.id.vn/vehicle/v3/api-docs
     url: /v3/api-docs
     path: /
     oauth:
