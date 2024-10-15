@@ -6,13 +6,15 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedMethods:
+            allowed-origins:
+              - *
+            allowed-methods:
               - GET
               - POST
               - PUT
               - DELETE
               - OPTIONS
-            allowedHeaders:
+            allowed-headers:
               - Authorization
               - Content-Type
               - XSRF-Token
