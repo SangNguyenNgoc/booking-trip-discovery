@@ -73,6 +73,23 @@ spring:
           filters:
             - RewritePath=/vehicle/v3/api-docs, /v3/api-docs
 
+
+        #Trip Service
+
+        - id: trip_api_route
+          uri: lb://trip
+          predicates:
+            - Path=/api/v1/trips/**, /api/v1/schedules/**
+          filters:
+            - RewritePath=/api/v1/(?<segment>.*), /${segment}
+
+        - id: trip_docs_route
+          uri: lb://trip
+          predicates:
+            - Path=/trip/v3/api-docs
+          filters:
+            - RewritePath=/trip/v3/api-docs, /v3/api-docs
+
 server:
   port: 8079
 
