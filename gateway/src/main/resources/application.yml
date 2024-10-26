@@ -90,6 +90,23 @@ spring:
           filters:
             - RewritePath=/trip/v3/api-docs, /v3/api-docs
 
+
+        #Booking Service
+
+        - id: booking_api_route
+          uri: lb://booking
+          predicates:
+            - Path=/api/v1/bills/**
+          filters:
+            - RewritePath=/api/v1/(?<segment>.*), /${segment}
+
+        - id: booking_docs_route
+          uri: lb://booking
+          predicates:
+            - Path=/booking/v3/api-docs
+          filters:
+            - RewritePath=/booking/v3/api-docs, /v3/api-docs
+
 server:
   port: 8079
 
