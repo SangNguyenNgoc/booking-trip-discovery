@@ -107,6 +107,23 @@ spring:
           filters:
             - RewritePath=/booking/v3/api-docs, /v3/api-docs
 
+
+        #Statistic Service
+        - id: statistic_api_route
+          uri: lb://statistics
+          predicates:
+            - Path=/api/v1/statistics/**
+          filters:
+            - RewritePath=/api/v1/(?<segment>.*), /${segment}
+
+        - id: statistic_docs_route
+          uri: lb://statistics
+          predicates:
+            - Path=/statistics/v3/api-docs
+          filters:
+            - RewritePath=/statistics/v3/api-docs, /v3/api-docs
+
+
 server:
   port: 8079
 

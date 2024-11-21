@@ -21,6 +21,8 @@ springdoc:
         url: https://api.devsphere.id.vn/trip/v3/api-docs
       - name: Booking
         url: https://api.devsphere.id.vn/booking/v3/api-docs
+      - name: Statistic
+        url: https://api.devsphere.id.vn/statistics/v3/api-docs
     url: /v3/api-docs
     path: /
     oauth:
